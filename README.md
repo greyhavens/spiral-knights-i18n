@@ -16,6 +16,10 @@ version will be used.
 The properties files need to be well-formatted and readable by Java. Characters above 127
 should be escaped by using `\u00e7` convention.
 
+Run `python3 tools/check_bundles.py` before sending a pull request. It reports keys that
+aren't in the English bundle, unescaped characters, and placeholders, HTML tags or `|`
+separators that don't match the English.
+
 #### Ancient history
 
 We used to have a google spreadsheet. We could push a button and it would export the current
