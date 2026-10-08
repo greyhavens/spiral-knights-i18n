@@ -8,6 +8,11 @@ We will accept pull requests for other languages, including new ones.
 
 Then these translations will make their way into the game.
 
+## License, of sorts
+
+The files in this repository are intended only to help improve Spiral Knights.
+Contributions are granted to Grey Havens for use in the game.
+
 ### Fine details
 
 If a translation doesn't need to change it can be omitted from a bundle and the English
