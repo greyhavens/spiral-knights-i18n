@@ -24,8 +24,8 @@ Errors (exit status 1):
 Warnings:
   - a different number of line breaks (\\n) than the English
   - leading spaces that differ from the English
-  - a translation identical to the English (redundant: English is the fallback), except __parent
-  - a __parent that differs from the English bundle's __parent
+  - a translation identical to the English (redundant: English is the fallback)
+  - a __parent in a translation (unneeded: parentage comes from the English bundle)
   - Portuguese text that looks Spanish (heuristic)
   - a missing translation file, for a language that has other bundles
 
@@ -149,10 +149,8 @@ def compare(lang, en, tr):
     out = []
     e, t = decode(en.raw), decode(tr.raw)
     if tr.key == "__parent":
-        # The parent bundle must match the English one; repeating it is expected, not redundant.
-        if e != t:
-            out.append(("warning", f"differs from English parent bundle '{e}'"))
-        return out
+        # Parentage comes from the English bundle, so a translation doesn't need its own.
+        return [("warning", "not needed in a translation (the English bundle's __parent is used); remove it")]
     if sorted(PLACEHOLDER.findall(e)) != sorted(PLACEHOLDER.findall(t)):
         out.append(("error", "placeholders differ from English"))
     if sorted(x.lower() for x in TAG.findall(e)) != sorted(x.lower() for x in TAG.findall(t)):
@@ -237,7 +235,7 @@ def main():
         if not args.no_missing:
             have = {p.key for p in parsed[name][0]}
             for p in parsed[en_name][0]:
-                if p.key not in have and (en_name, p.line) not in stray:
+                if p.key not in have and p.key != "__parent" and (en_name, p.line) not in stray:
                     report.append((name, 0, "notice", f"{p.key} is missing (in {en_name}:{p.line})"))
         for p in parsed[name][0]:
             if (name, p.line) in stray:
